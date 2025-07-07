@@ -2,3 +2,5 @@ openai
 langchain
 langchain-openai
 python-dotenv
+llama-index
+chromadb
