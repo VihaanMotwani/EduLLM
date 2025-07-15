@@ -1,0 +1,34 @@
+Transfer Learning
+Summary
+Transfer learning is a machine learning technique where a pre-trained model is reused on a new task. The model has already been trained on a large dataset and is fine-tuned on a smaller, task-specific dataset. This method is especially useful when there is limited labeled data for the new task, as it leverages knowledge from a similar task to achieve better performance.
+
+Key Concepts
+Pre-trained Models: Models that have been trained on large datasets (e.g., ImageNet) and contain generalized knowledge.
+
+Fine-tuning: Adapting a pre-trained model to the new task by retraining some of its layers with the new dataset.
+
+Feature Extraction: Using the pre-trained model to extract features from the new dataset and training a simpler model on top of these features.
+
+Domain Adaptation: Adjusting a model to work in a different but related domain (e.g., adapting an image classifier trained on animals to classify plants).
+
+Common Algorithms
+VGG16/VGG19: Convolutional neural networks trained on ImageNet for image classification, often used for transfer learning.
+
+ResNet: A deeper network architecture with residual connections, suitable for transfer learning tasks requiring deeper models.
+
+Inception: A model that uses convolutions of various sizes to capture information at multiple scales, often used in transfer learning scenarios.
+
+BERT: A pre-trained transformer model for natural language processing tasks like text classification and named entity recognition.
+
+Real-World Example
+Transfer learning is used in medical image analysis, where models pre-trained on general image datasets (like ImageNet) are fine-tuned for specific tasks such as detecting tumors in radiology scans.
+
+FAQs
+Q: Why is transfer learning useful?
+A: Transfer learning is useful when you have limited data for a specific task, as it allows you to leverage a pre-trained model that has already learned relevant features from a large dataset.
+
+Q: When should you use transfer learning?
+A: It’s especially helpful when your task is similar to the one the pre-trained model was trained on, or when you don't have enough data to train a model from scratch.
+
+Tags
+#TransferLearning #FineTuning #PreTrainedModels #DeepLearning #CNN #NLP #BERT #AI #MachineLearning #ImageClassification #MedicalAI
