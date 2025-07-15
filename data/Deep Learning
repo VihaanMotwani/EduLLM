@@ -1,0 +1,34 @@
+Deep Learning
+Summary
+Deep learning is a subset of machine learning that focuses on algorithms inspired by the structure and function of the brain, called artificial neural networks. It is used for handling vast amounts of data to perform tasks like classification, prediction, and recognition, particularly in applications like image and speech recognition.
+
+Key Concepts
+Neural Networks: Layers of interconnected nodes (neurons) that process information.
+
+Training: The process of teaching a neural network by adjusting weights and biases based on data.
+
+Backpropagation: The technique used to minimize errors in the network by updating the weights based on the loss function.
+
+Deep Networks: Networks with many layers, allowing the model to learn complex representations of data.
+
+Common Algorithms
+Convolutional Neural Networks (CNNs): Used primarily for image recognition by analyzing spatial hierarchies.
+
+Recurrent Neural Networks (RNNs): Effective for sequential data like time series or natural language processing.
+
+Generative Adversarial Networks (GANs): A framework where two networks compete, one generating and the other evaluating data.
+
+Autoencoders: Used for unsupervised learning, focusing on learning efficient codings of data.
+
+Real-World Example
+Deep learning is used in self-driving cars where neural networks process and recognize visual data (e.g., traffic signals, pedestrians) to make driving decisions.
+
+FAQs
+Q: What is the difference between machine learning and deep learning?
+A: Deep learning is a type of machine learning that uses multi-layered neural networks to handle complex data, while machine learning can involve simpler models.
+
+Q: When is deep learning useful?
+A: Deep learning is particularly useful for complex tasks such as image and speech recognition, natural language processing, and autonomous systems.
+
+Tags
+#DeepLearning #NeuralNetworks #CNN #RNN #GAN #AI #MachineLearning #DataScience #ML #Advanced
