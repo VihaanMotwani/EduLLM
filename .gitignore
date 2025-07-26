@@ -2,5 +2,7 @@ venv/
 .env
 __pycache__/
 *.pyc
-chroma_db
+backend/chroma_db/
+backend/raptor_db/
 .DS_Store
+test_data
