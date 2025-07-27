@@ -1,37 +1,41 @@
-import os
-from dotenv import load_dotenv 
 from langchain_openai import ChatOpenAI
-from langgraph.graph import StateGraph, END
-from typing import TypedDict, Annotated
-import operator
+from langchain_core.tools import tool
+from langgraph.prebuilt import create_react_agent
 
-load_dotenv()
+# Import our RAPTOR retriever function
+from .rag_service import get_raptor_retriever
 
-# 1. Define the state for our graph
-#    This will be the "memory" of our agent.
-class AgentState(TypedDict):
-    # The 'messages' key will hold the list of messages in the conversation.
-    messages: Annotated[list, operator.add]
+# 1. Initialize the retriever when the service starts
+retriever = get_raptor_retriever()
 
-# 2. Define the main agent node
-#    This function will be called every time the agent needs to act.
-def call_model(state):
-    messages = state['messages']
-    model = ChatOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    # Call the model with the current messages
-    response = model.invoke(messages)
-    # Return the new state with the model's response appended to the messages
-    return {"messages": [response]}
+# 2. Use the @tool decorator to create a tool from our retriever
+@tool
+def search_knowledge_base(query: str):
+    """
+    Looks up relevant documents from the EduLLM knowledge base to answer a user's question
+    about AI, Machine Learning, or related topics.
+    """
+    # The retriever returns a list of Document objects. We need to format them.
+    retrieved_docs = retriever.retrieve(query)
+    # We'll format the output to be a clean string for the LLM.
+    formatted_context = "\n\n".join([doc.text for doc in retrieved_docs])
+    if not formatted_context:
+        return "No relevant information found in the knowledge base."
+    return f"Retrieved context:\n\n{formatted_context}"
 
-# 3. Define the graph
-def create_agent_graph():
-    # Initialize the state graph
-    graph = StateGraph(AgentState)
-    # Add the main node
-    graph.add_node("llm", call_model)
-    # Set the entry point for the graph
-    graph.set_entry_point("llm")
-    # Add a final edge to the END node
-    graph.add_edge("llm", END)
-    # Compile the graph into a runnable object
-    return graph.compile()
+# 3. Define the list of tools the agent can use
+tools = [search_knowledge_base]
+
+# 4. Create the agent using the high-level constructor
+def create_agent():
+    """
+    Creates and returns a compiled ReAct agent graph.
+    """
+    # Define the language model
+    # Note: GPT-4o is recommended for better tool-using capabilities
+    model = ChatOpenAI(model="gpt-4o", temperature=0)
+
+    # Create the agent executor graph
+    agent_executor = create_react_agent(model, tools)
+    
+    return agent_executor
