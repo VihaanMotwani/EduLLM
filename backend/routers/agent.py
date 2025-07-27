@@ -4,12 +4,10 @@ from typing import List
 from services.agent_service import create_agent
 from langchain_core.messages import HumanMessage, AIMessage
 
-# Define the structure for a single message in the history
 class ChatMessage(BaseModel):
     sender: str
     text: str
 
-# The request will now contain the entire message history
 class AgentRequest(BaseModel):
     messages: List[ChatMessage]
 
@@ -29,10 +27,11 @@ async def invoke_agent(request: AgentRequest):
         elif msg.sender == 'ai':
             history.append(AIMessage(content=msg.text))
 
+    # The agent expects a single "messages" list.
     inputs = {"messages": history}
+    
     response_content = ""
 
-    # The streaming logic remains the same
     print("\n--- New Request ---")
     async for event in agent_executor.astream_events(inputs, version="v1"):
         kind = event["event"]
