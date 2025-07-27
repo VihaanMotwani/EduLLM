@@ -26,17 +26,25 @@ function App() {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
-    const userMessage = { sender: 'user', text: input };
-    setMessages(prev => [...prev, userMessage]);
+    const newUserMessage = { sender: 'user', text: input };
+    const updatedMessages = [...messages, newUserMessage];
+
+    // Update the UI immediately with the user's message
+    setMessages(updatedMessages);
     setInput('');
     setIsLoading(true);
 
     try {
+      // --- THIS IS THE KEY CHANGE ---
+      // Send the entire updated message history to the backend
       const response = await axios.post('http://127.0.0.1:8000/agent/invoke', {
-        query: input,
+        messages: updatedMessages,
       });
+
       const aiMessage = { sender: 'ai', text: response.data.response };
+      // Add the AI's response to the chat
       setMessages(prev => [...prev, aiMessage]);
+
     } catch (error) {
       console.error('Error communicating with the agent:', error);
       const errorMessage = { sender: 'ai', text: 'Sorry, I ran into an error.' };

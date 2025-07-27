@@ -1,10 +1,17 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import List
 from services.agent_service import create_agent
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, AIMessage
 
+# Define the structure for a single message in the history
+class ChatMessage(BaseModel):
+    sender: str
+    text: str
+
+# The request will now contain the entire message history
 class AgentRequest(BaseModel):
-    query: str
+    messages: List[ChatMessage]
 
 router = APIRouter()
 agent_executor = create_agent()
@@ -12,26 +19,32 @@ agent_executor = create_agent()
 @router.post("/invoke")
 async def invoke_agent(request: AgentRequest):
     """
-    Invokes the ReAct agent and streams the response, printing internal steps.
+    Invokes the ReAct agent with the entire conversation history.
     """
-    inputs = {"messages": [HumanMessage(content=request.query)]}
+    # Convert our simple ChatMessage objects into LangChain's message objects
+    history = []
+    for msg in request.messages:
+        if msg.sender == 'user':
+            history.append(HumanMessage(content=msg.text))
+        elif msg.sender == 'ai':
+            history.append(AIMessage(content=msg.text))
+
+    inputs = {"messages": history}
     response_content = ""
 
+    # The streaming logic remains the same
     print("\n--- New Request ---")
     async for event in agent_executor.astream_events(inputs, version="v1"):
         kind = event["event"]
-        # Print the event to the console
         print(f"EVENT: {kind}")
 
-        # If the event is the start of a tool, print its input
         if kind == "on_tool_start":
             print(f'  - Tool: {event["name"]}')
             print(f'  - Input: {event["data"]["input"]}')
 
-        # If the event is the end of a tool, print its output
         if kind == "on_tool_end":
             output_content = event["data"]["output"].content
-            print(f'  - Output: {output_content[:150]}...') # Print first 150 chars
+            print(f'  - Output: {output_content[:150]}...')
 
         if kind == "on_chat_model_stream":
             content = event["data"]["chunk"].content
