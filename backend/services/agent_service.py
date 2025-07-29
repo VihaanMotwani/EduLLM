@@ -18,6 +18,11 @@ def search_knowledge_base(query: str):
     """
     # The retriever returns a list of Document objects. We need to format them.
     retrieved_docs = retriever.retrieve(query)
+
+    if not retrieved_docs:
+        print("--- RAG Tool: No info found. ---")
+        return "No relevant information was found in the knowledge base for this query."
+
     # We'll format the output to be a clean string for the LLM.
     formatted_context = "\n\n".join([doc.text for doc in retrieved_docs])
     if not formatted_context:
@@ -40,6 +45,10 @@ def create_agent():
         concise, and accurate explanations. When a user asks a question,
         first decide if you can answer it from your general knowledge or if you
         need to use the search_knowledge_base tool to consult the provided documents.
+        If the tool returns a message saying 'No relevant information was found', 
+        you MUST stop and answer using your own knowledge. If you do not know the answer either, 
+        you must inform the user that you couldn't find the required information
+        and point them towards other resources. 
         Be friendly, encouraging, and always aim to simplify difficult concepts.
         """
     )
