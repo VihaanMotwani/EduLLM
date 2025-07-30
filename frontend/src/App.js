@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import TextareaAutosize from 'react-textarea-autosize';
-// Import new icons
-import { FiSend } from 'react-icons/fi';
+import { FiSend, FiMenu, FiLayers, FiZap } from 'react-icons/fi';
 import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
 import './App.css';
 
@@ -12,6 +11,7 @@ function App() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isDeepDiveMode, setIsDeepDiveMode] = useState(false); // State for DeepDive mode
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -29,20 +29,17 @@ function App() {
     const newUserMessage = { sender: 'user', text: input };
     const updatedMessages = [...messages, newUserMessage];
 
-    // Update the UI immediately with the user's message
     setMessages(updatedMessages);
     setInput('');
     setIsLoading(true);
 
     try {
-      // --- THIS IS THE KEY CHANGE ---
-      // Send the entire updated message history to the backend
       const response = await axios.post('http://127.0.0.1:8000/agent/invoke', {
         messages: updatedMessages,
+        deep_dive_mode: isDeepDiveMode,
       });
 
       const aiMessage = { sender: 'ai', text: response.data.response };
-      // Add the AI's response to the chat
       setMessages(prev => [...prev, aiMessage]);
 
     } catch (error) {
@@ -56,7 +53,6 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* --- Left Sidebar --- */}
       <aside className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
           <h1>EduLLM</h1>
@@ -64,11 +60,9 @@ function App() {
         </div>
       </aside>
 
-      {/* --- Main Chat Panel --- */}
       <main className="main-chat-panel">
         <header className="chat-panel-header">
           <button className="menu-button" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-            {/* --- CHANGE HERE: Dynamic Icon --- */}
             {isSidebarOpen ? <BsArrowBarLeft /> : <BsArrowBarRight />}
           </button>
         </header>
@@ -93,24 +87,41 @@ function App() {
         </div>
 
         <div className="chat-input-area">
-          <form className="input-form" onSubmit={handleSubmit}>
-            <TextareaAutosize
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask EduLLM anything..."
-              disabled={isLoading}
-              maxRows={5}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSubmit(e);
-                }
-              }}
-            />
-            <button type="submit" className="send-button" aria-label="Send message" disabled={!input.trim() || isLoading}>
-              <FiSend />
-            </button>
-          </form>
+          <div className="input-form-container">
+            <form className="input-form" onSubmit={handleSubmit}>
+              <TextareaAutosize
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask EduLLM anything..."
+                disabled={isLoading}
+                maxRows={5}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }
+                }}
+              />
+              <button type="submit" className="send-button" aria-label="Send message" disabled={!input.trim() || isLoading}>
+                <FiSend />
+              </button>
+            </form>
+            {/* --- THIS IS THE NEW UI --- */}
+            <div className="mode-buttons-container">
+                <button
+                    className={`mode-button ${!isDeepDiveMode ? 'active' : ''}`}
+                    onClick={() => setIsDeepDiveMode(false)}
+                >
+                    <FiZap size={14} /> Standard
+                </button>
+                <button
+                    className={`mode-button ${isDeepDiveMode ? 'active' : ''}`}
+                    onClick={() => setIsDeepDiveMode(true)}
+                >
+                    <FiLayers size={14} /> DeepDive
+                </button>
+            </div>
+          </div>
         </div>
       </main>
     </div>
