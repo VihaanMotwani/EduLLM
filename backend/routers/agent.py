@@ -40,7 +40,7 @@ async def invoke_agent(request: AgentRequest):
 
         # Add a check to ensure the output is not None before logging
         if kind == "on_tool_end":
-            output = event["data"].get("output") # Use .get() for safety
+            output = event["data"].get("output")
             if output and hasattr(output, 'content'):
                 print(f'  - Output: {output.content[:150]}...')
             else:
