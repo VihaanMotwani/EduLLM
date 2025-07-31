@@ -6,12 +6,13 @@ from llama_index.packs.raptor import RaptorPack, RaptorRetriever
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
 import qdrant_client
+from qdrant_client.async_qdrant_client import AsyncQdrantClient
 from dotenv import load_dotenv
 
 load_dotenv()
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-DATA_PATH = os.path.join(PROJECT_ROOT, "test_data")
+DATA_PATH = os.path.join(PROJECT_ROOT, "docs")
 QDRANT_PATH = os.path.join(PROJECT_ROOT, "backend", "qdrant_db")
 
 class RaptorService:
@@ -24,8 +25,9 @@ class RaptorService:
         self.collection_name = collection_name
         
         # --- Qdrant Client and Vector Store Setup ---
-        # Qdrant client now points to a local directory
-        self.client = qdrant_client.QdrantClient(path=QDRANT_PATH)
+        # Connect to Qdrant server instead of local file
+        self.client = qdrant_client.QdrantClient(host="localhost", port=6333)
+        self.aclient = AsyncQdrantClient(host="localhost", port=6333)
         
         # Check if we need to rebuild
         # A simple way is to check if the collection exists and force_rebuild is True
@@ -40,15 +42,20 @@ class RaptorService:
              if not os.path.exists(DATA_PATH) or not os.listdir(DATA_PATH):
                  raise ValueError("Data directory is empty. Please add documents before building.")
              
+             # Pass both sync and async clients to QdrantVectorStore
              self.vector_store = QdrantVectorStore(
-                 client=self.client, collection_name=self.collection_name
+                 client=self.client,
+                 aclient=self.aclient,
+                 collection_name=self.collection_name
              )
              self.documents = SimpleDirectoryReader(DATA_PATH).load_data()
              self._build_raptor_tree()
         else:
             print("Loading existing RAPTOR index from Qdrant.")
             self.vector_store = QdrantVectorStore(
-                client=self.client, collection_name=self.collection_name
+                client=self.client,
+                aclient=self.aclient,
+                collection_name=self.collection_name
             )
             self._load_retriever()
 
