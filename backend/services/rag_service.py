@@ -13,7 +13,6 @@ load_dotenv()
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 DATA_PATH = os.path.join(PROJECT_ROOT, "docs")
-QDRANT_PATH = os.path.join(PROJECT_ROOT, "backend", "qdrant_db")
 
 class RaptorService:
     """

@@ -4,7 +4,7 @@ from services.rag_service import get_raptor_retriever
 retriever = get_raptor_retriever()
 
 @tool
-def search_knowledge_base(query: str):
+def rag_search_tool(query: str):
     """
     Looks up relevant documents from the EduLLM knowledge base to answer a user's question
     about AI, Machine Learning, or related topics.
