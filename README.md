@@ -1,6 +1,6 @@
 # EduLLM - Your Personal AI/ML Tutor
 
-Welcome to the EduLLM project! This is an AI-powered tutor for Artificial Intelligence, Machine Learning and related topics.
+Welcome to the EduLLM project! This is a scalable learning platform designed to act as an AI-powered tutor for Machine Learning and related topics.
 
 ## 🤖 Core Architecture
 
@@ -9,7 +9,7 @@ The application is built with a modern, full-stack architecture:
 * **Frontend:** A responsive chat interface built with **React**.
 * **Backend:** A powerful API built with **Python FastAPI**.
 * **AI Agent:** An intelligent, stateful agent orchestrated with **LangGraph**.
-* **Knowledge Base (RAG):** The agent can retrieve information from a custom knowledge base using an advanced **RAPTOR** indexing strategy, powered by **LlamaIndex** and a **Qdrant** vector database.
+* **Knowledge Base (RAG):** The agent can retrieve information from a custom knowledge base using an advanced **RAPTOR** indexing strategy, powered by **LlamaIndex** and a **Qdrant** vector database server.
 
 ## 📋 Prerequisites
 
@@ -23,7 +23,7 @@ You will also need an **OpenAI API Key**.
 
 ## 🚀 Getting Started
 
-Follow these steps to set up and run the project locally.
+Follow these steps in order to set up and run the project locally.
 
 ### 1. Clone the Repository
 
@@ -32,9 +32,21 @@ git clone <your-repository-url>
 cd EduLLM
 ```
 
-### 2. Backend Setup
+### 2. Backend & Database Setup
 
-First, let's set up the Python backend and the knowledge base.
+This section covers setting up the Python backend and the Qdrant vector database.
+
+#### **Step 2a: Run the Qdrant Database Server**
+
+Our RAG system requires a running Qdrant server. For local development, you will need to run a Qdrant instance.
+
+Please refer to the **official Qdrant documentation** for instructions on how to install and run a local Qdrant server. This is often done by downloading a binary or using a package manager.
+
+Once started, the Qdrant server should be accessible at `http://localhost:6333`.
+
+#### **Step 2b: Set Up the Python Backend**
+
+Now, let's set up the FastAPI application.
 
 ```bash
 # Navigate to the backend directory
@@ -58,16 +70,18 @@ Now, open the newly created `.env` file and add your OpenAI API Key:
 OPENAI_API_KEY="your_api_key_here"
 ```
 
-### 3. Build the Knowledge Base
+### 3. Build the Knowledge Base (Indexing)
 
-The agent's knowledge comes from the documents in the `/data` directory. You must run the ingestion script once to build the vector database.
+The agent's knowledge comes from the documents in the `/data` directory. You must run the ingestion script once to populate the Qdrant database. This process reads your documents, chunks them, and creates a searchable index.
+
+**Important:** Make sure your local Qdrant server is running before you execute this command.
 
 ```bash
-# From the backend directory (with your venv active)
+# From the /backend directory (with your venv active)
 python -m services.rag_service
 ```
 
-This will create a `qdrant_db` folder in the backend.
+This script will connect to your local Qdrant server and build the index.
 
 ### 4. Frontend Setup
 
@@ -83,7 +97,10 @@ npm install
 
 ### 5. Running the Application
 
-To run the full application, you need to have **two terminals** running simultaneously.
+To run the full application, you need to have **three services** running: the Qdrant server, the backend, and the frontend.
+
+* **Service 1: Qdrant Server**
+    * This should be running based on your setup from Step 2a.
 
 * **Terminal 1: Start the Backend**
     ```bash
@@ -108,10 +125,9 @@ A brief overview of the key directories:
 * `/backend`: The FastAPI application.
     * `/routers`: Defines the API endpoints.
     * `/services`: Contains the core AI logic (agent and RAG services).
-    * `/qdrant_db`: The local vector database (created after ingestion).
 
 ## 🤝 How to Contribute
 
 1.  Create a new branch for your feature (e.g., `feature/add-user-auth`).
 2.  Make your changes and commit them with clear, descriptive messages.
-3.  Push your branch to the repository and open a Pull Request.
+3.  Push your branch to the repository and open a Pull Request for review. Direct pushes to the `main` branch are disabled.
