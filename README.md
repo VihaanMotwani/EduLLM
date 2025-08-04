@@ -1,6 +1,6 @@
 # EduLLM - Your Personal AI/ML Tutor
 
-Welcome to the EduLLM project! This is a scalable learning platform designed to act as an AI-powered tutor for Machine Learning and related topics.
+Welcome to the EduLLM project. This is a scalable learning platform designed to act as an AI-powered tutor for Machine Learning and related topics.
 
 ## 🤖 Core Architecture
 
