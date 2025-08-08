@@ -114,5 +114,23 @@ def get_chat_messages(chat_id: int) -> List[Dict[str, Any]]:
     conn.close()
     return [dict(message) for message in messages]
 
+def get_chat_owner(chat_id: int) -> Optional[int]:
+    """Retrieves the user_id of the owner of a chat."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT user_id FROM chats WHERE id = ?', (chat_id,))
+    result = cursor.fetchone()
+    conn.close()
+    return result['user_id'] if result else None
+
+def get_chat(chat_id: int) -> Optional[Dict[str, Any]]:
+    """Retrieves a single chat thread by its ID."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM chats WHERE id = ?', (chat_id,))
+    chat = cursor.fetchone()
+    conn.close()
+    return dict(chat) if chat else None
+
 # --- Initialize the database and tables when the module is first imported ---
 create_tables()

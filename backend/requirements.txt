@@ -1,0 +1,16 @@
+fastapi
+langchain
+langchain-openai
+langchain-core
+langchain_community
+langgraph 
+langsmith
+langchain_tavily
+llamaindex
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+pydantic
+python-dotenv
+qdrant
+uvicorn

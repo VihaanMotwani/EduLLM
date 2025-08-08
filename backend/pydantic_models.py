@@ -1,6 +1,9 @@
 from pydantic import BaseModel, Field
-from enum import Enum
 from datetime import datetime
+from enum import Enum
+from typing import Optional
+
+# --- Chat Models ---
 
 class ModelName(str, Enum):
     GPT4_1 = "gpt-4.1"
@@ -8,10 +11,40 @@ class ModelName(str, Enum):
 
 class QueryInput(BaseModel):
     question: str
-    session_id: str = Field(default=None)
+    chat_id: int
     model: ModelName = Field(default=ModelName.GPT4_1_MINI)
 
 class QueryResponse(BaseModel):
     answer: str
-    session_id: str
+    chat_id: int
     model: ModelName
+
+class Chat(BaseModel):
+    id: int
+    user_id: int
+    title: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# --- User & Authentication Models ---
+
+class UserBase(BaseModel):
+    username: str
+
+class UserCreate(UserBase):
+    password: str
+
+class User(UserBase):
+    id: int
+    
+    class Config:
+        from_attributes = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
