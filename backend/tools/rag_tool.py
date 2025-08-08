@@ -1,5 +1,5 @@
 from langchain_core.tools import tool
-from services.rag_service import get_raptor_retriever
+from backend.raptor_service import get_raptor_retriever
 
 retriever = get_raptor_retriever()
 

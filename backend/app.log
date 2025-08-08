@@ -1,0 +1,59 @@
+INFO:root:Session ID: 8af2e35c-3026-46b4-9ac9-abd4d7615914, User Query: What is softmax regession?, Model: gpt-4.1-mini
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Session ID: 8af2e35c-3026-46b4-9ac9-abd4d7615914, AI Response: Softmax regression, also known as multinomial logistic regression, is a generalization of logistic regression used for multi-class classification problems. It models the probabilities of each class using the softmax function, which converts raw scores (logits) into probabilities that sum to one. The model predicts the class with the highest probability.
+INFO:root:Session ID: e17fee63-0923-44da-a371-93dd3c19e20c, User Query: According to your docs what is softmax regession?, Model: gpt-4.1-mini
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:6333/collections/edullm_raptor_qdrant/points/search "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Session ID: e17fee63-0923-44da-a371-93dd3c19e20c, AI Response: According to the documentation, softmax regression is a model used for multi-class classification tasks. It employs a linear model to estimate the conditional probabilities of each class and uses the softmax function to convert these outputs into valid probability distributions. The model is typically trained using the cross-entropy loss function. The documentation also highlights practical aspects such as numerical stability in softmax computation, hyperparameter tuning, and model optimization.
+INFO:root:Session ID: 1754664208946, User Query: hey, Model: gpt-4.1-mini
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Session ID: 1754664208946, AI Response: Hello! How can I assist you today?
+INFO:root:Session ID: 1754664208946, User Query: What is softmax regression, Model: gpt-4.1-mini
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Session ID: 1754664208946, AI Response: Softmax regression is a generalization of logistic regression used for multi-class classification problems. It models the probabilities of each class by applying the softmax function to a linear combination of input features, ensuring that the predicted probabilities for all classes sum to one. This allows the model to assign a probability to each possible class and select the most likely one as the prediction.
+INFO:root:Session ID: 1754664208946, User Query: According to your docs what is softmax regression, Model: gpt-4.1-mini
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:6333/collections/edullm_raptor_qdrant/points/search "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Session ID: 1754664208946, AI Response: According to the provided documentation, softmax regression is a model used for multi-class classification tasks that estimates the conditional probabilities of each class using a linear model. It applies the softmax function to transform these outputs into valid probability distributions that sum to one. The documentation also covers implementing softmax regression from scratch and using deep learning frameworks, addressing numerical stability issues during softmax computation, and practical aspects like hyperparameter tuning and model optimization.
+INFO:root:Session ID: 1754664208946, User Query: i am vihaan, Model: gpt-4.1-mini
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Session ID: 1754664208946, AI Response: I'm here to assist you! How can I help you today?
+INFO:root:Session ID: 1754664208946, User Query: whats my name, Model: gpt-4.1-mini
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Session ID: 1754664208946, AI Response: You mentioned that your name is Vihaan.
+INFO:root:Session ID: 1754664840794, User Query: hey, Model: gpt-4.1-mini
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Session ID: 1754664840794, AI Response: Hello! I'm here to help you. What can I do for you today?
+INFO:root:Session ID: 1754664840794, User Query: who won the most recent MIT hackathon, Model: gpt-4.1-mini
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:6333/collections/edullm_raptor_qdrant/points/search "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Session ID: 1754664840794, AI Response: The provided context does not contain any information about the winner of the most recent MIT hackathon.
+INFO:root:Session ID: 1754665017924, User Query: who won the most recent MIT hackathon, Model: gpt-4.1-mini
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:6333/collections/edullm_raptor_qdrant/points/search "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Session ID: 1754665017924, AI Response: The most recent MIT hackathon winner mentioned is Cody Li from the USA, who won the 2025 Global AI Hackathon with the project "RehabAI."

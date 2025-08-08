@@ -13,6 +13,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const messagesEndRef = useRef(null);
+  // At the top of your App component, with the other state variables
+  const [sessionId, setSessionId] = useState(null);
+
+  useEffect(() => {
+    // Generate a unique session ID when the component mounts
+    setSessionId(Date.now().toString());
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -29,20 +36,21 @@ function App() {
     const newUserMessage = { sender: 'user', text: input };
     const updatedMessages = [...messages, newUserMessage];
 
-    // Update the UI immediately with the user's message
     setMessages(updatedMessages);
     setInput('');
     setIsLoading(true);
 
     try {
       // --- THIS IS THE KEY CHANGE ---
-      // Send the entire updated message history to the backend
-      const response = await axios.post('http://127.0.0.1:8000/agent/invoke', {
-        messages: updatedMessages,
+      // The endpoint is now '/chat'
+      const response = await axios.post('http://127.0.0.1:8000/chat', {
+        question: input, // Send only the latest user input as the question
+        session_id: sessionId,
+        model: "gpt-4.1-mini" // Or whichever model you intend to use
       });
 
-      const aiMessage = { sender: 'ai', text: response.data.response };
-      // Add the AI's response to the chat
+      // The backend returns the answer directly in the 'answer' field
+      const aiMessage = { sender: 'ai', text: response.data.answer };
       setMessages(prev => [...prev, aiMessage]);
 
     } catch (error) {
