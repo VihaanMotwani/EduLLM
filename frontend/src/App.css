@@ -2,13 +2,14 @@
 
 :root {
   --background-dark: #131314;
-  /* --- CHANGE HERE: Darker, more subtle gray --- */
   --sidebar-bg: #212124;
   --chat-panel-bg: #1e1f20;
   --user-bubble-bg: #3c4655;
   --text-primary: #e3e3e3;
   --text-secondary: #bdc1c6;
   --border-color: #3c4043;
+  --active-item-bg: #2d2d30;
+  --hover-bg: #2a2b2c;
   --font-family: 'Inter', sans-serif;
   --monospace-font: 'Roboto Mono', monospace;
 }
@@ -35,17 +36,13 @@ body {
 
 .sidebar {
   background-color: var(--sidebar-bg);
-  padding: 20px;
-  flex-shrink: 0;
-  overflow: hidden;
-  transition: width 0.3s ease, padding 0.3s ease;
-}
-.sidebar.open {
   width: 260px;
-}
-.sidebar.closed {
-  width: 0;
-  padding: 20px 0;
+  flex-shrink: 0;
+  padding: 16px;
+  /* --- NEW: Flexbox layout for sidebar --- */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .main-chat-panel {
@@ -58,38 +55,82 @@ body {
 
 /* --- Sidebar Content --- */
 .sidebar-header {
-  white-space: nowrap; /* Prevents text from wrapping when collapsing */
+  white-space: nowrap;
 }
 .sidebar-header h1 {
   font-size: 20px;
   font-weight: 500;
-}
-.sidebar-header .tagline {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-top: 4px;
+  margin-bottom: 16px;
 }
 
-/* --- Main Chat Panel --- */
-.chat-panel-header {
-  padding: 10px 15px;
-  height: 60px; /* Fixed height for header */
+/* --- NEW: New Chat Button Styling --- */
+.new-chat-button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s;
 }
-.menu-button {
+.new-chat-button:hover {
+  background-color: var(--hover-bg);
+}
+
+/* --- NEW: Chat List Styling --- */
+.chat-list {
+  flex-grow: 1; /* Makes the list take up available space */
+  overflow-y: auto; /* Allows scrolling if list is long */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.chat-list-item {
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.2s;
+}
+.chat-list-item:hover {
+  background-color: var(--hover-bg);
+}
+.chat-list-item.active {
+  background-color: var(--user-bubble-bg);
+}
+
+/* --- NEW: Sidebar Footer & Logout Styling --- */
+.sidebar-footer {
+  margin-top: auto; /* Pushes footer to the bottom */
+}
+.logout-button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-size: 24px;
+  font-size: 14px;
   cursor: pointer;
-  padding: 5px;
   display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
 }
-.menu-button:hover {
+.logout-button:hover {
+  background-color: var(--hover-bg);
   color: var(--text-primary);
 }
 
+/* --- Main Chat Panel (no changes needed) --- */
 .chat-history {
   flex-grow: 1;
   overflow-y: auto;
@@ -100,10 +141,9 @@ body {
   margin-bottom: 30px;
   display: flex;
 }
-.message-wrapper.user { justify-content: flex-end; }
+.message-wrapper.human { justify-content: flex-end; } /* Changed from .user */
 .message-wrapper.ai { justify-content: flex-start; }
 
-/* --- User Prompt Styling --- */
 .user-prompt {
   background-color: var(--user-bubble-bg);
   padding: 12px 18px;
@@ -113,7 +153,6 @@ body {
   line-height: 1.6;
 }
 
-/* --- AI Response Styling --- */
 .ai-response { max-width: 100%; line-height: 1.7; }
 .ai-response h1, .ai-response h2, .ai-response h3 { font-weight: 700; margin-bottom: 0.5em; }
 .ai-response p { margin-bottom: 1em; }
@@ -126,7 +165,7 @@ body {
 .thinking { animation: blink 1s infinite; }
 @keyframes blink { 50% { opacity: 0.5; } }
 
-/* --- Fixed Input Box --- */
+/* --- Fixed Input Box (no changes needed) --- */
 .chat-input-area {
   padding: 20px 15%;
   background: linear-gradient(to top, var(--chat-panel-bg) 70%, transparent);
@@ -152,3 +191,72 @@ body {
 .send-button:hover { background-color: #4c5767; }
 .send-button:disabled { background-color: #2a2b2c; cursor: not-allowed; opacity: 0.5; }
 .send-button svg { width: 20px; height: 20px; }
+
+
+/* --- NEW: Auth Page Styling --- */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--chat-panel-bg);
+}
+
+.auth-form {
+  background-color: var(--sidebar-bg);
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--chat-panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--user-bubble-bg);
+  border: none;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.auth-form button:hover {
+  background-color: #4c5767;
+}
+
+.auth-form p {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.auth-form a {
+  color: #8ab4f8; /* A nice blue for links */
+  text-decoration: none;
+}
+
+.auth-form a:hover {
+  text-decoration: underline;
+}
