@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ✅ ADD the import for your new raptor service
-from raptor_service import get_raptor_retriever
+from backend.rag.raptor_service import get_raptor_retriever
 
 # Initialize Tavily search
 tavily = TavilySearch(max_results=3, topic="general")

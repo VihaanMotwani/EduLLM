@@ -6,13 +6,13 @@ from datetime import timedelta
 from typing import List
 
 # --- Local Imports ---
-import db_utils
-import auth_utils
-from pydantic_models import QueryInput, QueryResponse, UserCreate, User, Token, Chat, ChatUpdate
-from langgraph_agent import agent # Assuming your agent is ready
+import backend.utils.db_utils as db_utils
+import backend.utils.auth_utils as auth_utils
+from backend.models.pydantic_models import QueryInput, QueryResponse, UserCreate, User, Token, Chat, ChatUpdate
+from backend.graph.langgraph_agent import agent # Assuming your agent is ready
 from langchain_core.messages import HumanMessage
-from langchain_utils import contextualise_chain, title_generation_chain
-from utils import history_to_lc_messages, append_message
+from backend.utils.langchain_utils import contextualise_chain, title_generation_chain
+from backend.utils.utils import history_to_lc_messages, append_message
 
 app = FastAPI()
 

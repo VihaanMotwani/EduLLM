@@ -8,8 +8,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
 # --- Local Imports ---
-import db_utils
-from pydantic_models import User
+import backend.utils.db_utils as db_utils
+from backend.models.pydantic_models import User
 
 # --- Configuration ---
 # You should generate a real secret key, e.g., using: openssl rand -hex 32

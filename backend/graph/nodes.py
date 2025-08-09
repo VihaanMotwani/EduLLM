@@ -1,6 +1,6 @@
 from typing import Literal
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
-from shared import AgentState, router_llm, judge_llm, answer_llm, RouteDecision, RagJudge
+from backend.models.shared import AgentState, router_llm, judge_llm, answer_llm, RouteDecision, RagJudge
 from tools import rag_search_tool, web_search_tool
 
 # ── Node 1: decision/router ─────────────────────────────────────────
