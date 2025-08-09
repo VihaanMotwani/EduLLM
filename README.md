@@ -1,133 +1,167 @@
-# EduLLM - Your Personal AI/ML Tutor
+# **EduLLM: Your Personal AI/ML Tutor** 🚀
 
-Welcome to the EduLLM project! This is a scalable learning platform designed to act as an AI-powered tutor for Machine Learning and related topics.
+EduLLM is a **full-stack AI-powered tutor** for AI and Machine Learning concepts.  
+It combines a conversational agent, advanced retrieval (RAPTOR), and live web search to deliver accurate, context-aware answers in real time.  
 
-## 🤖 Core Architecture
+---
 
-The application is built with a modern, full-stack architecture:
+## **✨ Features**  
 
-* **Frontend:** A responsive chat interface built with **React**.
-* **Backend:** A powerful API built with **Python FastAPI**.
-* **AI Agent:** An intelligent, stateful agent orchestrated with **LangGraph**.
-* **Knowledge Base (RAG):** The agent can retrieve information from a custom knowledge base using an advanced **RAPTOR** indexing strategy, powered by **LlamaIndex** and a **Qdrant** vector database server.
+- **User Accounts & Saved Chats** – Secure JWT-based authentication with persistent conversation history.  
+- **Agentic Conversational AI** – Decides when to use **internal RAG** vs **live web search** for the best answer.  
+- **Advanced RAG (RAPTOR)** – Context-aware retrieval from curated AI/ML documents.  
+- **Live Web Search** – Accesses the latest information for up-to-date responses.  
+- **Responsive UI** – Clean, modern, mobile-friendly React interface.  
 
-## 📋 Prerequisites
+---
 
-Before you begin, ensure you have the following installed:
+## **🛠 Tech Stack**  
 
-* Python (3.10+)
-* Node.js and npm
-* Git
+| Layer | Technology | Purpose |
+| --- | --- | --- |
+| **Frontend** | React, React Router, Axios | Dynamic SPA & API communication |
+| **Backend** | Python, FastAPI | Async API & business logic |
+| **AI Orchestration** | LangChain, LangGraph | Conversational agent & tool control |
+| **RAG** | LlamaIndex (RAPTOR), Qdrant | Retrieval, vector storage, similarity search |
+| **Auth** | JWT (python-jose) | Secure login |
+| **Database** | SQLite | User data & chat history |
 
-You will also need an **OpenAI API Key**.
+---
 
-## 🚀 Getting Started
+## **📐 Architecture Overview**
 
-Follow these steps in order to set up and run the project locally.
+![Agent Flow Diagram](backend/agent.png)
+  
 
-### 1. Clone the Repository
-
-```bash
-git clone <your-repository-url>
-cd EduLLM
+```mermaid
+flowchart LR
+    UI[React Frontend] --> API[FastAPI Backend]
+    API --> Agent[LangGraph Agent]
+    Agent -->|Internal KB| RAG[LlamaIndex + Qdrant]
+    Agent -->|External Info| Web[Live Web Search]
 ```
 
-### 2. Backend & Database Setup
+1. **React SPA** – User interacts with the web app.  
+2. **FastAPI Backend** – Handles auth, chat history, and queries.  
+3. **LangGraph Agent** – Decides whether to use RAG or web search.  
+4. **RAG Pipeline** – Qdrant vector store + RAPTOR retrieval.  
+5. **Response Generation** – Agent composes the final answer.  
 
-This section covers setting up the Python backend and the Qdrant vector database.
+---
 
-#### **Step 2a: Run the Qdrant Database Server**
+## **📚 Pre-Loaded RAG Documents**  
 
-Our RAG system requires a running Qdrant server. For local development, you will need to run a Qdrant instance.
+| Resource | Topics | License | Link |
+| --- | --- | --- | --- |
+| UC Berkeley CS 188 Textbook | AI foundations, search, RL, Bayes nets, ML basics | CC BY-SA 4.0 | [PDF Link](http://ai.berkeley.edu/cs188_textbook/cs188-textbook.pdf) |
+| Dive into Deep Learning | Deep learning theory & code | CC BY-SA 4.0 (text), MIT (code) | [PDF Link](https://d2l.ai/d2l-en.pdf) |
+| Machine Learning Cheat Sheet | Quick ML reference | CC BY-SA 3.0 | [PDF Link](https://github.com/soulmachine/machine-learning-cheat-sheet/raw/master/machine-learning-cheat-sheet.pdf) |
 
-Please refer to the **official Qdrant documentation** for instructions on how to install and run a local Qdrant server. This is often done by downloading a binary or using a package manager.
+---
 
-Once started, the Qdrant server should be accessible at `http://localhost:6333`.
+## ⚡ Setup & Installation  
 
-#### **Step 2b: Set Up the Python Backend**
+### **Prerequisites**  
+- Python 3.10+  
+- Node.js & npm  
+- Git  
+- Qdrant (download from [GitHub releases](https://github.com/qdrant/qdrant/releases))  
 
-Now, let's set up the FastAPI application.
+---
 
+### **1️⃣ Clone the Repository**  
 ```bash
-# Navigate to the backend directory
+git clone <your-repo-url>
+cd <your-repo-name>
+```
+
+---
+
+### **2️⃣ Start Qdrant Server**  
+In a **new terminal**:  
+
+**macOS / Linux**  
+```bash
+./qdrant
+```
+
+**Windows (PowerShell)**  
+```powershell
+.\qdrant.exe
+```
+
+Verify Qdrant is running by visiting: [http://localhost:6334/dashboard](http://localhost:6334/dashboard)  
+
+---
+
+### **3️⃣ Backend Setup**  
+In a **new terminal**:  
+```bash
 cd backend
-
-# Create and activate a Python virtual environment
 python -m venv venv
+```
+
+**Activate Virtual Environment:**  
+
+**macOS / Linux**  
+```bash
 source venv/bin/activate
-# On Windows, use: venv\Scripts\activate
+```
 
-# Install the required Python dependencies
+**Windows (PowerShell)**  
+```powershell
+venv\Scripts\Activate.ps1
+```
+
+**Install Dependencies:**  
+```bash
 pip install -r requirements.txt
+```
 
-# Create the environment file for your API key
+**Configure Environment Variables:**  
+```bash
+# macOS / Linux
 cp .env.example .env
-```
 
-Now, open the newly created `.env` file and add your OpenAI API Key:
+# Windows (PowerShell)
+copy .env.example .env
+```  
+Edit `.env` to add your API keys (`OPENAI_API_KEY`, `TAVILY_API_KEY`, etc.).  
 
-```env
-OPENAI_API_KEY="your_api_key_here"
-```
+---
 
-### 3. Build the Knowledge Base (Indexing)
-
-The agent's knowledge comes from the documents in the `/data` directory. You must run the ingestion script once to populate the Qdrant database. This process reads your documents, chunks them, and creates a searchable index.
-
-**Important:** Make sure your local Qdrant server is running before you execute this command.
-
+### **4️⃣ Index Documents for RAG**  
+To enable retrieval from local knowledge base:  
 ```bash
-# From the /backend directory (with your venv active)
-python -m services.rag_service
+# Place your PDFs/docs in:
+backend/docs
+
+# Run ingestion
+python raptor_service.py
 ```
 
-This script will connect to your local Qdrant server and build the index.
+You only need to run this when documents are added/changed.  
 
-### 4. Frontend Setup
+---
 
-Now, let's set up the React user interface. Open a **new terminal** for this.
-
+### **5️⃣ Start Backend Server**  
 ```bash
-# Navigate to the frontend directory from the project root
+uvicorn main:app --reload
+```
+
+---
+
+### **6️⃣ Frontend Setup**  
+In a **new terminal**:  
+```bash
 cd frontend
-
-# Install the required npm packages
 npm install
+npm start
 ```
 
-### 5. Running the Application
+Now open the app at: [http://localhost:3000](http://localhost:3000) 🎯  
 
-To run the full application, you need to have **three services** running: the Qdrant server, the backend, and the frontend.
+---
 
-* **Service 1: Qdrant Server**
-    * This should be running based on your setup from Step 2a.
-
-* **Terminal 1: Start the Backend**
-    ```bash
-    # In the /backend directory with venv active
-    uvicorn main:app --reload
-    ```
-
-* **Terminal 2: Start the Frontend**
-    ```bash
-    # In the /frontend directory
-    npm start
-    ```
-
-Your application should now be running! The frontend will be accessible at `http://localhost:3000`.
-
-## 📂 Project Structure
-
-A brief overview of the key directories:
-
-* `/data`: Contains the raw `.pdf` and `.md` files for the RAG knowledge base.
-* `/frontend`: The React application for the user interface.
-* `/backend`: The FastAPI application.
-    * `/routers`: Defines the API endpoints.
-    * `/services`: Contains the core AI logic (agent and RAG services).
-
-## 🤝 How to Contribute
-
-1.  Create a new branch for your feature (e.g., `feature/add-user-auth`).
-2.  Make your changes and commit them with clear, descriptive messages.
-3.  Push your branch to the repository and open a Pull Request for review. Direct pushes to the `main` branch are disabled.
+## **📄 License**  
+MIT License – See `LICENSE` for details.  
