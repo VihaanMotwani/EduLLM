@@ -1,5 +1,7 @@
+// src/pages/LoginPage.js
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { FiLogIn, FiBookOpen } from 'react-icons/fi';
 import api from '../api';
 
 function LoginPage() {
@@ -16,27 +18,40 @@ function LoginPage() {
       formData.append('username', username);
       formData.append('password', password);
 
-      const response = await api.post('/token', formData, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      });
-
+      const response = await api.post('/token', formData);
       localStorage.setItem('accessToken', response.data.access_token);
-      navigate('/'); // Redirect to main chat page on success
+      navigate('/');
     } catch (err) {
       setError('Invalid username or password.');
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" required />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-        <button type="submit">Login</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-      </form>
-      <p>Don't have an account? <Link to="/register">Register</Link></p>
+    <div className="auth-page-container">
+      <div className="auth-branding-section">
+        <FiBookOpen className="icon" />
+        <h1>Welcome Back to EduLLM</h1>
+        <p>Your personal AI/ML tutor, ready to help you learn and explore.</p>
+      </div>
+
+      <div className="auth-form-section">
+        <form onSubmit={handleSubmit} className="auth-form">
+          <h2>Sign In</h2>
+          <div className="input-group">
+            <label htmlFor="username">Username</label>
+            <input id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          </div>
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          </div>
+          {error && <p className="error-message">{error}</p>}
+          <button type="submit" className="auth-submit-button">Login</button>
+          <p className="form-footer">
+            Don't have an account? <Link to="/register">Register here</Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }

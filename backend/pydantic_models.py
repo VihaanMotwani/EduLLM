@@ -28,6 +28,9 @@ class Chat(BaseModel):
     class Config:
         from_attributes = True
 
+class ChatUpdate(BaseModel):
+    title: str
+
 # --- User & Authentication Models ---
 
 class UserBase(BaseModel):

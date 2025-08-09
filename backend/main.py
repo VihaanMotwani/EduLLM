@@ -8,10 +8,10 @@ from typing import List
 # --- Local Imports ---
 import db_utils
 import auth_utils
-from pydantic_models import QueryInput, QueryResponse, UserCreate, User, Token, Chat
+from pydantic_models import QueryInput, QueryResponse, UserCreate, User, Token, Chat, ChatUpdate
 from langgraph_agent import agent # Assuming your agent is ready
 from langchain_core.messages import HumanMessage
-from langchain_utils import contextualise_chain
+from langchain_utils import contextualise_chain, title_generation_chain
 from utils import history_to_lc_messages, append_message
 
 app = FastAPI()
@@ -85,31 +85,42 @@ def get_chat_history(chat_id: int, current_user: User = Depends(auth_utils.get_c
 @app.post("/chat", response_model=QueryResponse)
 def chat(query_input: QueryInput, current_user: User = Depends(auth_utils.get_current_user)):
     """
-    Main chat endpoint, now protected and linked to a user and chat_id.
+    Main chat endpoint, now with auto-naming for the first message.
     """
-    # 1. Verify that the user owns the chat they are trying to post to
     owner_id = db_utils.get_chat_owner(query_input.chat_id)
     if owner_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not authorized to post to this chat")
 
-    # 2. Add the user's message to the database
-    db_utils.add_message_to_history(query_input.chat_id, "human", query_input.question)
+    # --- Auto-naming logic ---
+    chat_details = db_utils.get_chat(query_input.chat_id)
+    if chat_details and chat_details['title'] == "New Chat":
+        # This is the first message in a new chat, generate and set a title
+        generated_title = title_generation_chain.invoke({"input": query_input.question})
+        db_utils.update_chat_title(query_input.chat_id, generated_title)
 
-    # 3. Get the full chat history for context
+    # --- Existing chat logic ---
+    db_utils.add_message_to_history(query_input.chat_id, "human", query_input.question)
     chat_history = db_utils.get_chat_messages(query_input.chat_id)
     messages = history_to_lc_messages(chat_history)
     
-    # 4. Generate a standalone question (Contextualization)
     standalone_q = contextualise_chain.invoke({
-        "chat_history": messages[:-1], # Pass history *before* the current question
+        "chat_history": messages[:-1],
         "input": query_input.question,
     })
 
-    # 5. Invoke the agent
     result = agent.invoke({"messages": [HumanMessage(content=standalone_q)]})
     answer = result["messages"][-1].content
     
-    # 6. Save the AI's response to the database
     db_utils.add_message_to_history(query_input.chat_id, "ai", answer)
 
     return QueryResponse(answer=answer, chat_id=query_input.chat_id, model=query_input.model)
+
+@app.put("/chats/{chat_id}")
+def rename_chat(chat_id: int, chat_update: ChatUpdate, current_user: User = Depends(auth_utils.get_current_user)):
+    """Allows a user to rename their own chat thread."""
+    owner_id = db_utils.get_chat_owner(chat_id)
+    if owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to rename this chat")
+    
+    db_utils.update_chat_title(chat_id, chat_update.title)
+    return {"status": "success", "message": "Chat renamed."}

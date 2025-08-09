@@ -17,5 +17,11 @@ CONTEXT_PROMPT = ChatPromptTemplate.from_messages([
     ("human", "{input}")
 ])
 
-
 contextualise_chain = ( CONTEXT_PROMPT | ChatOpenAI(model_name="gpt-4.1-mini", temperature=0) | StrOutputParser()).with_config(run_name="contextualise_chain")
+
+TITLE_PROMPT = ChatPromptTemplate.from_messages([
+    ("system", "You are an expert at creating concise, 5-word or less titles for chat conversations. Do not use quotes. Do not add any extra commentary or punctuation."),
+    ("human", "Generate a title for this user query: {input}")
+])
+
+title_generation_chain = ( TITLE_PROMPT | ChatOpenAI(model_name="gpt-4.1-mini", temperature=0) | StrOutputParser()).with_config(run_name="title_generation_chain")

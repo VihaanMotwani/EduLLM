@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 chroma_db
 .DS_Store
+rag_app_user.db

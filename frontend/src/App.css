@@ -99,7 +99,10 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   transition: background-color 0.2s;
+  color: var(--text-primary);
+  text-decoration: none;
 }
+
 .chat-list-item:hover {
   background-color: var(--hover-bg);
 }
@@ -193,70 +196,204 @@ body {
 .send-button svg { width: 20px; height: 20px; }
 
 
-/* --- NEW: Auth Page Styling --- */
-.auth-container {
+
+/* --- UPDATED: Auth Page Styling --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-page-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  width: 100vw;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.auth-branding-section {
+  background: linear-gradient(to bottom right, #2d3748, #1a202c);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  color: white;
+  text-align: center;
+}
+
+.auth-branding-section .icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+}
+
+.auth-branding-section h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.auth-branding-section p {
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 350px;
+}
+
+.auth-form-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
   background-color: var(--chat-panel-bg);
 }
 
 .auth-form {
-  background-color: var(--sidebar-bg);
-  padding: 40px;
-  border-radius: 12px;
   width: 100%;
   max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  border: 1px solid var(--border-color);
+  gap: 24px;
 }
 
 .auth-form h2 {
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text-primary);
   text-align: center;
   margin-bottom: 10px;
 }
 
-.auth-form input {
-  width: 100%;
-  padding: 12px;
-  background-color: var(--chat-panel-bg);
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  padding: 12px 16px;
+  background-color: var(--sidebar-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   color: var(--text-primary);
   font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.auth-form button {
-  width: 100%;
-  padding: 12px;
+.input-group input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.2);
+}
+
+.auth-submit-button {
+  padding: 14px;
   border-radius: 8px;
-  background-color: var(--user-bubble-bg);
+  background-color: var(--accent-color);
   border: none;
-  color: var(--text-primary);
+  color: #FFFFFF;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 12px rgba(138, 180, 248, 0.15);
 }
 
-.auth-form button:hover {
-  background-color: #4c5767;
+.auth-submit-button:hover {
+  background-color: #a2c6f9;
 }
 
-.auth-form p {
+.auth-form .form-footer {
   text-align: center;
   color: var(--text-secondary);
 }
 
-.auth-form a {
-  color: #8ab4f8; /* A nice blue for links */
+.auth-form .form-footer a {
+  color: var(--accent-color);
   text-decoration: none;
+  font-weight: 500;
 }
 
-.auth-form a:hover {
+.auth-form .form-footer a:hover {
   text-decoration: underline;
+}
+
+.error-message {
+  color: #f28b82;
+  text-align: center;
+  font-size: 14px;
+}
+
+.start-chat-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+  color: var(--text-secondary);
+  padding: 20px;
+}
+
+.start-chat-container .icon {
+  font-size: 64px;
+  color: var(--border-color);
+}
+
+.start-chat-container h2 {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.start-chat-container p {
+  max-width: 300px;
+}
+
+.start-chat-container .auth-submit-button {
+  max-width: 250px;
+}
+
+.chat-list-item {
+  position: relative; /* Needed for absolute positioning of the icon */
+  display: flex;
+  align-items: center;
+}
+
+.chat-list-item .edit-icon {
+  display: none; /* Hide icon by default */
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.chat-list-item:hover .edit-icon {
+  display: block; /* Show icon on hover */
+}
+
+.chat-list-item .edit-icon:hover {
+  color: var(--text-primary);
+}
+
+.title-edit-input {
+  width: 100%;
+  background-color: var(--hover-bg);
+  border: 1px solid var(--accent-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  padding: 10px;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.title-edit-input:focus {
+  outline: none;
 }

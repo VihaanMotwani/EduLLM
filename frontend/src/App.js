@@ -20,11 +20,21 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        
+        {/* All protected routes now point to ChatPage */}
+        <Route 
+          path="/chat/:chatId" 
+          element={
+            <ProtectedRoute>
+              <ChatPage />
+            </ProtectedRoute>
+          } 
+        />
         <Route 
           path="/" 
           element={
             <ProtectedRoute>
-              <ChatPage /> {}
+              <ChatPage />
             </ProtectedRoute>
           } 
         />

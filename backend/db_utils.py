@@ -100,7 +100,7 @@ def get_user_chats(user_id: int) -> List[Dict[str, Any]]:
     """Retrieves all chat threads for a specific user, ordered by most recent."""
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT id, title, created_at FROM chats WHERE user_id = ? ORDER BY created_at DESC', (user_id,))
+    cursor.execute('SELECT id, user_id, title, created_at FROM chats WHERE user_id = ? ORDER BY created_at DESC', (user_id,))
     chats = cursor.fetchall()
     conn.close()
     return [dict(chat) for chat in chats]
@@ -131,6 +131,13 @@ def get_chat(chat_id: int) -> Optional[Dict[str, Any]]:
     chat = cursor.fetchone()
     conn.close()
     return dict(chat) if chat else None
+
+def update_chat_title(chat_id: int, new_title: str):
+    """Updates the title of a specific chat thread."""
+    conn = get_db_connection()
+    conn.execute('UPDATE chats SET title = ? WHERE id = ?', (new_title, chat_id))
+    conn.commit()
+    conn.close()
 
 # --- Initialize the database and tables when the module is first imported ---
 create_tables()
