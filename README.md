@@ -71,8 +71,8 @@ flowchart LR
 
 ### **1️⃣ Clone the Repository**  
 ```bash
-git clone <your-repo-url>
-cd <your-repo-name>
+git clone https://github.com/VihaanMotwani/EduLLM.git
+cd EduLLM
 ```
 
 ---
