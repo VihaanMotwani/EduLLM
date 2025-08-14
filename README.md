@@ -5,6 +5,11 @@ It combines a conversational agent, advanced retrieval (RAPTOR), and live web se
 
 ---
 
+## Documentation
+
+The complete project documentation is available here:  
+[📄 View Documentation (Google Docs)](https://docs.google.com/document/d/1gaK0aDQVCIfNv4vnBjpYr-bybA24Zi8j9UbJdovWiWo/edit?usp=sharing)
+
 ## **✨ Features**  
 
 - **User Accounts & Saved Chats** – Secure JWT-based authentication with persistent conversation history.  
