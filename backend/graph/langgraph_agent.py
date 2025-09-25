@@ -1,8 +1,8 @@
 from typing import Literal
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langgraph.graph import StateGraph, END
-from backend.graph.nodes import router_node, rag_node, web_node, answer_node
-from backend.models.shared import AgentState
+from graph.nodes import router_node, rag_node, web_node, answer_node
+from models.shared import AgentState
 
 # ── Routing helpers ─────────────────────────────────────────────────
 def from_router(st: AgentState) -> Literal["rag", "answer", "end"]:

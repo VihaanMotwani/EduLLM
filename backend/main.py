@@ -5,18 +5,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from datetime import timedelta
 from typing import List
 
-# --- Local Imports ---
-import backend.utils.db_utils as db_utils
-import backend.utils.auth_utils as auth_utils
-from backend.models.pydantic_models import QueryInput, QueryResponse, UserCreate, User, Token, Chat, ChatUpdate
-from backend.graph.langgraph_agent import agent # Assuming your agent is ready
+import utils.db_utils as db_utils
+import utils.auth_utils as auth_utils
+from models.pydantic_models import QueryInput, QueryResponse, UserCreate, User, Token, Chat, ChatUpdate
+from graph.langgraph_agent import agent
 from langchain_core.messages import HumanMessage
-from backend.utils.langchain_utils import contextualise_chain, title_generation_chain
-from backend.utils.utils import history_to_lc_messages, append_message
+from utils.langchain_utils import contextualise_chain, title_generation_chain
+from utils.utils import history_to_lc_messages, append_message
 
 app = FastAPI()
 
-# --- CORS Middleware ---
 origins = ["http://localhost:3000"]
 app.add_middleware(
     CORSMiddleware,

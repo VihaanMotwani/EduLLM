@@ -5,3 +5,4 @@ __pycache__/
 chroma_db
 .DS_Store
 rag_app_user.db
+.vscode/
